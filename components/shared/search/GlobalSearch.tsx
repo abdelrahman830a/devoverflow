@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -13,12 +14,12 @@ const GlobalSearch = () => {
           height={24}
           className="cursor-pointer"
         />
-        {/* <Input
+        <Input
           type="text"
           placeholder="Search anything globally..."
           value={""}
           className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
-        /> */}
+        />
       </div>
     </div>
   );
