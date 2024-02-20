@@ -1,9 +1,48 @@
+import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
+import NoResult from "@/components/shared/NoResult";
 import LocalSearchbar from "@/components/shared/search/LocalSearchbar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
 import Link from "next/link";
+
+const questions = [
+  {
+    _id: "1",
+    title: "How to use React?",
+    tags: [
+      { _id: "1", name: "python" },
+      { _id: "1", name: "sql" },
+    ],
+    author: {
+      _id: "1",
+      name: "John Doe",
+      picture: "/assets/images/profile.jpg",
+    },
+    upvotes: 10000,
+    views: 30000,
+    answers: [],
+    createdAt: new Date("2023-10-10T12:00:00.000Z"),
+  },
+  {
+    _id: "2",
+    title: "How to center a div?",
+    tags: [
+      { _id: "1", name: "css" },
+      { _id: "1", name: "html" },
+    ],
+    author: {
+      _id: "2",
+      name: "John das",
+      picture: "/assets/images/profile.jpg",
+    },
+    upvotes: 10,
+    views: 10,
+    answers: [],
+    createdAt: new Date("2022-10-10T12:00:00.000Z"),
+  },
+];
 
 export default function Home() {
   return (
@@ -34,6 +73,33 @@ export default function Home() {
       </div>
 
       <HomeFilters />
+
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {questions.length > 0 ? (
+          questions.map((question) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags}
+              author={question.author}
+              views={question.views}
+              upvotes={question.upvotes}
+              answers={question.answers}
+              createdAt={question.createdAt}
+            />
+          ))
+        ) : (
+          <NoResult
+            title="There are no questions to show"
+            description="Be the first to break the silence! 🚀 Ask a Question and kickstart the
+            discussion. our query could be the next big thing others learn from. Get
+            involved! 💡"
+            link="/ask-question"
+            linkTitle="Ask a Question"
+          />
+        )}
+      </div>
     </>
   );
 }

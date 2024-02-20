@@ -7,52 +7,37 @@ const popularTags = [
   {
     _id: "1",
     name: "React",
-    totalQuestions: 1000,
+    totalQuestions: 25,
   },
   {
     _id: "2",
     name: "JavaScript",
-    totalQuestions: 1000,
+    totalQuestions: 60,
   },
   {
     _id: "3",
     name: "TypeScript",
-    totalQuestions: 1000,
+    totalQuestions: 34,
   },
   {
     _id: "4",
-    name: "TypeScript",
-    totalQuestions: 1000,
+    name: "Python",
+    totalQuestions: 22,
   },
   {
     _id: "5",
-    name: "TypeScript",
-    totalQuestions: 1000,
+    name: "MongoDB",
+    totalQuestions: 19,
   },
   {
     _id: "6",
-    name: "TypeScript",
-    totalQuestions: 1000,
+    name: "Sql",
+    totalQuestions: 15,
   },
   {
     _id: "7",
-    name: "TypeScript",
-    totalQuestions: 1000,
-  },
-  {
-    _id: "8",
-    name: "TypeScript",
-    totalQuestions: 1000,
-  },
-  {
-    _id: "9",
-    name: "TypeScript",
-    totalQuestions: 1000,
-  },
-  {
-    _id: "10",
-    name: "TypeScript",
-    totalQuestions: 1000,
+    name: "Node.js",
+    totalQuestions: 10,
   },
 ];
 
@@ -64,39 +49,19 @@ const RightSidebar = () => {
     },
     {
       _id: "2",
-      title: "How to use React Query with Next.js",
+      title: "How to create a custom hook in React?",
     },
     {
       _id: "3",
-      title: "How to use React Query with Next.js",
+      title: "why is my react component not rendering?",
     },
     {
       _id: "4",
-      title: "How to use React Query with Next.js",
+      title: "what is the best way to learn React?",
     },
     {
       _id: "5",
-      title: "How to use React Query with Next.js",
-    },
-    {
-      _id: "6",
-      title: "How to use React Query with Next.js",
-    },
-    {
-      _id: "7",
-      title: "How to use React Query with Next.js",
-    },
-    {
-      _id: "8",
-      title: "How to use React Query with Next.js",
-    },
-    {
-      _id: "9",
-      title: "How to use React Query with Next.js",
-    },
-    {
-      _id: "10",
-      title: "How to use React Query with Next.js",
+      title: "When to use useReducer in React?",
     },
   ];
   return (
