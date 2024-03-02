@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import Question from "../database/question.model";
 import Tag from "../database/tag.model";
 import User from "../database/user.model";
@@ -28,7 +28,7 @@ export async function createQuestion(params: CreateQuestionParams) {
     try {
         await connectToDatabase();
 
-        const { title, content, author, tags } = params;
+        const { title, content, author, tags, path } = params;
 
         const question = await Question.create({
             title,
@@ -56,7 +56,7 @@ export async function createQuestion(params: CreateQuestionParams) {
 
         // incerment author's reputation
 
-        revalidateTag('tags');
+        revalidatePath(path);
     } catch (error) {
         console.log('Error creating question', error);
         throw error;
