@@ -4,6 +4,10 @@ const nextConfig = {
     serverComponentsExternalPackages: ["mongoose"],
     mdxRs: true,
   },
+  images: {
+    protocols: ["http", "https", "data"],
+    hostname: "*",
+  },
 };
 
 export default nextConfig;
