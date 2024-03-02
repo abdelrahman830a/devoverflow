@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
-import link from "next/link";
 
 interface Props {
   title: string;

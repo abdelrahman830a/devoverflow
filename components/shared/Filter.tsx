@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -9,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
 
 interface Props {
   filters: {
