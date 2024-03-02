@@ -5,8 +5,16 @@ const nextConfig = {
     mdxRs: true,
   },
   images: {
-    protocols: ["http", "https", "data"],
-    hostname: "*",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*",
+      },
+      {
+        protocol: "http",
+        hostname: "*",
+      },
+    ],
   },
 };
 
