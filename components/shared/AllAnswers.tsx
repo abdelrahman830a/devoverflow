@@ -26,7 +26,6 @@ const AllAnswers = async ({
   const result = await getAllAnswers({
     questionId,
   });
-  console.log({ result });
   return (
     <div className="mt-11">
       <div className="flex items-center justify-between">
@@ -36,7 +35,7 @@ const AllAnswers = async ({
       </div>
 
       <div>
-        {result.answers.map((answer) => (
+        {result?.answers.map((answer) => (
           <article key={answer._id} className="light-border border-b py-10">
             <div className="flex items-center justify-between">
               <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
@@ -61,7 +60,15 @@ const AllAnswers = async ({
                   </div>
                 </Link>
                 <div className="flex justify-end">
-                  {/* <Votes type="answer" /> */}
+                  <Votes
+                    type="Answer"
+                    itemId={answer._id}
+                    userId={authorId}
+                    upvotes={answer.upvotes.length}
+                    hasupVoted={answer.upvotes.includes(authorId)}
+                    downvotes={answer.downvotes.length}
+                    hasdownVoted={answer.downvotes.includes(authorId)}
+                  />
                 </div>
               </div>
             </div>

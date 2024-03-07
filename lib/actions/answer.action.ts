@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import Answer from "../database/answer.model";
 import Question from "../database/question.model";
 import { connectToDatabase } from "../mongoose"
-import { CreateAnswerParams, GetAnswersParams } from "./shared.types";
+import { AnswerVoteParams, CreateAnswerParams, GetAnswersParams } from "./shared.types";
 
 export async function createAnswer(params: CreateAnswerParams) {
     try {
@@ -17,7 +17,6 @@ export async function createAnswer(params: CreateAnswerParams) {
             content,
         });
 
-        console.log({ newAnswer });
 
         await Question.findByIdAndUpdate(question, {
             $push: { answers: newAnswer._id }
@@ -45,3 +44,60 @@ export async function getAllAnswers(params: GetAnswersParams) {
         throw error;
     }
 }
+
+export async function upvoteAnswer(params: AnswerVoteParams) {
+    try {
+        connectToDatabase();
+
+        const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
+
+        let updateQuery = {};
+
+        if (hasupVoted) {
+            updateQuery = { $pull: { upvotes: userId } }
+        } else if (hasdownVoted) {
+            updateQuery = { $pull: { downvotes: userId }, $push: { upvotes: userId } };
+        }
+        else {
+            updateQuery = { $addToSet: { upvotes: userId } };
+        }
+
+        const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, { new: true });
+
+        if (!answer) throw new Error("Answer not found");
+
+        revalidatePath(path);
+    } catch (error) {
+        console.log("Error upvoting answer", error);
+        throw error;
+    }
+}
+
+export async function donwVoteAnswer(params: AnswerVoteParams) {
+    try {
+        connectToDatabase();
+
+        const { answerId, userId, hasupVoted, hasdownVoted, path } = params;
+
+        let updateQuery = {};
+
+        if (hasdownVoted) {
+            updateQuery = { $pull: { downVotes: userId } }
+        } else if (hasupVoted) {
+            updateQuery = { $pull: { upvotes: userId }, $push: { downvotes: userId } }
+        } else {
+            updateQuery = { $addToSet: { downVotes: userId } }
+        }
+
+        const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, { new: true });
+        console.log(answer);
+
+        if (!answer) throw new Error("Answer not found");
+
+        revalidatePath(path);
+    } catch (error) {
+        console.log("Error downvoting answer", error);
+        throw error;
+    }
+}
+
