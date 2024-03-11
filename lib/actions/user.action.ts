@@ -180,7 +180,7 @@ export async function getUserInfo(params: GetUserByIdParams) {
         });
 
         if (!user) {
-            throw new Error("User not found!");
+            throw new Error("User not found! Or not authorized to view this user's profile.");
         }
 
         const totalQuestions = await Question.countDocuments({ author: user._id });
