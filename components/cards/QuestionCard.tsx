@@ -3,9 +3,12 @@ import Link from "next/link";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
+import { SignedIn, auth } from "@clerk/nextjs";
+import CardsActions from "../shared/CardsActions";
 
 interface QuestionProps {
   _id: string;
+  // clerkId?: string | null | undefined;
   title: string;
   tags: {
     _id: string;
@@ -13,6 +16,7 @@ interface QuestionProps {
   }[];
   author: {
     _id: string;
+    clerkId: string;
     name: string;
     picture: string;
   };
@@ -22,8 +26,9 @@ interface QuestionProps {
   createdAt: Date;
 }
 
-const QuestionCard = ({
+const QuestionCard = async ({
   _id,
+  // clerkId,
   title,
   tags,
   author,
@@ -32,10 +37,12 @@ const QuestionCard = ({
   answers,
   createdAt,
 }: QuestionProps) => {
+  const { userId: clerkId } = auth();
+
   return (
-    <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
+    <div className="card-wrapper rounded-[10px] px-11 py-9">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
-        <div>
+        <div className="justify-start">
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex md:hidden">
             {getTimeStamp(createdAt)}
           </span>
@@ -47,6 +54,11 @@ const QuestionCard = ({
           </Link>
         </div>
         {/* If signed in add edit delete actions */}
+        <SignedIn>
+          {clerkId === author.clerkId && (
+            <CardsActions type="question" itemId={JSON.stringify(_id)} />
+          )}
+        </SignedIn>
       </div>
 
       <div className="mt-3.5 flex flex-wrap gap-2">

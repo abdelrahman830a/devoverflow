@@ -118,7 +118,7 @@ export interface CreateUserParams {
 }
 
 export interface GetUserByIdParams {
-    userId: string;
+    userId: string | null;
 }
 
 export interface GetAllUsersParams {
@@ -149,7 +149,7 @@ export interface GetSavedQuestionsParams {
 }
 
 export interface GetUserStatsParams {
-    userId: string;
+    userId: string | null;
     page?: number;
     pageSize?: number;
 }

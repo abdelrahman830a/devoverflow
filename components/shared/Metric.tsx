@@ -22,7 +22,7 @@ const Metric = ({
   isAuthor,
 }: MetricProps) => {
   const metricContent = (
-    <>
+    <div className="flex gap-1">
       <Image
         src={imgUrl}
         width={16}
@@ -39,12 +39,14 @@ const Metric = ({
           {title}
         </span>
       </p>
-    </>
+    </div>
   );
   if (href) {
     return <Link href={href}>{metricContent}</Link>;
   }
-  return <div className="flex-center flex-wrap gap-1">{metricContent}</div>;
+  return (
+    <div className="flex-center flex flex-wrap gap-1">{metricContent}</div>
+  );
 };
 
 export default Metric;

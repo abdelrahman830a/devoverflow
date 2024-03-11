@@ -41,3 +41,20 @@ export const formatNumber = (num: number): string => {
     return Math.floor(num / 1000000) + "M";
   }
 };
+
+export function getJoinedDate(date: Date): string {
+  // Array of month names in English
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"
+  ];
+
+  // Extract month and year from the Date object
+  const month = monthNames[date.getMonth()];
+  const year = String(date.getFullYear());
+
+  // Join month and year with a space
+  const joinedDate = `${month} ${year}`;
+
+  return joinedDate;
+}

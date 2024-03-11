@@ -1,3 +1,6 @@
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 import Answer from "@/components/forms/Answer";
 import AllAnswers from "@/components/shared/AllAnswers";
 import Metric from "@/components/shared/Metric";
@@ -8,12 +11,8 @@ import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
 
 const page = async ({ params }: any) => {
-  const result = await getQuestionById({ questionId: params.id });
   const { userId: clerkId } = auth();
 
   let mongoUser;
@@ -21,6 +20,8 @@ const page = async ({ params }: any) => {
   if (clerkId) {
     mongoUser = await getUserById({ userId: clerkId });
   }
+
+  const result = await getQuestionById({ questionId: params.id });
   return (
     <>
       <div className="flex-start flex w-full flex-col">
@@ -104,7 +105,7 @@ const page = async ({ params }: any) => {
       <Answer
         question={result.content}
         questionId={JSON.stringify(result._id)}
-        authorId={mongoUser._id}
+        authorId={JSON.stringify(mongoUser._id)}
       />
     </>
   );
