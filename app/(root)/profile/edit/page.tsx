@@ -1,5 +1,5 @@
-import Profile from "@/components/shared/Profile";
-import { getUserById, getUserInfo } from "@/lib/actions/user.action";
+import Profile from "@/components/forms/Profile";
+import { getUserById } from "@/lib/actions/user.action";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import React from "react";

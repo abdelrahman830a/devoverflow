@@ -8,6 +8,7 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { ProfileSchema } from "@/lib/validations";
 import { updateUser } from "@/lib/actions/user.action";
 import { usePathname, useRouter } from "next/navigation";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
   user: string;
@@ -117,6 +119,7 @@ const Profile = ({ user, clerkId }: Props) => {
               <FormControl className="mt-3.5">
                 <Input
                   placeholder="https://"
+                  type="url"
                   className="no-focus paragraph-regular background-light800_darkgradient  light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field}
                 />
@@ -155,7 +158,7 @@ const Profile = ({ user, clerkId }: Props) => {
                 Bio
               </FormLabel>
               <FormControl className="mt-3.5">
-                <Input
+                <Textarea
                   placeholder="Tell us about yourself"
                   className=" background-light900_dark300 no-focus paragraph-regular background-light800_darkgradient  light-border-2 text-dark300_light700 min-h-[56px] border"
                   {...field}
@@ -167,12 +170,14 @@ const Profile = ({ user, clerkId }: Props) => {
           )}
         />
 
-        <Button
-          className="primary-gradient w-fit !text-light-900"
-          disabled={isSubmitting}
-          type="submit">
-          {isSubmitting ? "Saving..." : "Save"}
-        </Button>
+        <div className="mt-7 justify-end">
+          <Button
+            className="primary-gradient w-fit !text-light-900"
+            disabled={isSubmitting}
+            type="submit">
+            {isSubmitting ? "Saving..." : "Save"}
+          </Button>
+        </div>
       </form>
     </Form>
   );

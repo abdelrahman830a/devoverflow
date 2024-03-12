@@ -157,3 +157,15 @@ export interface GetUserStatsParams {
 export interface DeleteUserParams {
     clerkId: string;
 }
+
+export interface RemoveUrlQueryParams {
+    params: string;
+    keys: string[];
+}
+
+export interface UrlQueryParams {
+    params: string;
+    key: string;
+    value: string | null;
+}
+
