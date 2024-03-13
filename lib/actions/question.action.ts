@@ -15,10 +15,9 @@ export async function getQuestions(params: GetQuestionsParams) {
     try {
         connectToDatabase();
 
-        const { searchQuery } = params;
+        const { searchQuery, filter, page = 1, pageSize = 5 } = params;
 
-        const query: FilterQuery<typeof Question> = {}
-
+        const query: FilterQuery<typeof Question> = {};
         if (searchQuery) {
             query.$or = [
                 // getting questions with title === searchQuery
@@ -32,13 +31,40 @@ export async function getQuestions(params: GetQuestionsParams) {
             ]
         }
 
+
+        let sortOptions = {};
+        switch (filter) {
+            case 'newest':
+                sortOptions = { createdAt: -1 };
+                break;
+            case 'frequent':
+                sortOptions = { views: -1 };
+                break;
+            case 'unanswered':
+                query.answers = { $size: 0 };
+                break;
+            case 'recommended':
+                sortOptions = { createdAt: -1 }
+                break;
+        }
+
+        // Calculate number of posts to skip based on the page number and page size
+        const skipAmount = (page - 1) * pageSize;
+
+
         const questions = await Question.find(query)
             .populate({ path: "tags", model: Tag })
             .populate({ path: 'author', model: User })
-            .sort({ createdAt: -1 });
+            .skip(skipAmount)
+            .limit(pageSize)
+            .sort(sortOptions)
 
 
-        return { questions };
+        const totalQuestions = await Question.countDocuments(query);
+
+        const isNext = totalQuestions > skipAmount + questions.length;
+
+        return { questions, isNext };
     } catch (error) {
         console.log('Error getting questions', error);
         throw error;

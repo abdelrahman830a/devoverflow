@@ -8,7 +8,6 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -37,7 +36,7 @@ const Profile = ({ user, clerkId }: Props) => {
     defaultValues: {
       name: parsedUserInfo.name || "",
       username: parsedUserInfo.username || "",
-      portfolioLink: parsedUserInfo.portfolioLink || "",
+      portfolioWebsite: parsedUserInfo.portfolioWebsite || "",
       bio: parsedUserInfo.bio || "",
       location: parsedUserInfo.location || "",
     },
@@ -52,7 +51,7 @@ const Profile = ({ user, clerkId }: Props) => {
         updateData: {
           name: values.name,
           username: values.username,
-          portfolioLink: values.portfolioLink,
+          portfolioWebsite: values.portfolioWebsite,
           bio: values.bio,
           location: values.location,
         },
@@ -110,7 +109,7 @@ const Profile = ({ user, clerkId }: Props) => {
         />
         <FormField
           control={form.control}
-          name="portfolioLink"
+          name="portfolioWebsite"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
               <FormLabel className="paragraph-semibold text-dark400_light800">

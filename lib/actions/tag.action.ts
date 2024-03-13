@@ -20,15 +20,12 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
         }
 
         // Find interaction for the user and group of tags
-
-        return [{
-            _id: '1',
-            name: 'tag1'
-        }, {
-            _id: '2',
-            name: 'tag2'
-        },
-        ]
+        const hotTags = await Tag.aggregate([
+            { $project: { name: 1, numberOfQuestions: { $size: '$questions' } } },
+            { $sort: { numberOfQuestions: -1 } }, // descending
+            { $limit: 2 }
+        ])
+        return hotTags;
     } catch (error) {
         console.error(error);
         throw error;
@@ -39,9 +36,43 @@ export async function getAllTags(params: GetAllTagsParams) {
     try {
         connectToDatabase();
 
-        const tags = await Tag.find({});
+        const { searchQuery, filter, page = 1, pageSize = 10 } = params;
 
-        return { tags };
+        const query: FilterQuery<typeof Tag> = {}
+        if (searchQuery) {
+            query.$or = [
+                { name: { $regex: new RegExp(searchQuery, "i") } }
+            ]
+        }
+
+        let sortOptions = {};
+        switch (filter) {
+            case 'popular':
+                sortOptions = { questions: -1 };
+                break;
+            case 'recent':
+                sortOptions = { createdAt: -1 };
+                break;
+            case 'old':
+                sortOptions = { createdAt: 1 };
+                break;
+            case 'name':
+                sortOptions = { name: 1 }
+                break;
+        }
+
+        const skipAmount = (page - 1) * pageSize;
+
+        const tags = await Tag.find(query)
+            .skip(skipAmount)
+            .limit(pageSize)
+            .sort(sortOptions)
+
+        const totalTags = await Tag.countDocuments(query);
+
+        const isNext = totalTags > skipAmount + tags.length
+
+        return { tags, isNext };
     } catch (error) {
         console.error(error);
         throw error;
@@ -52,9 +83,11 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
     try {
         connectToDatabase();
 
-        const { tagId, page = 1, pageSize = 10, searchQuery } = params;
+        const { tagId, page = 1, pageSize = 5, searchQuery } = params;
 
         const tagFilter: FilterQuery<ITag> = { _id: tagId }
+
+        const skiptAmount = (page - 1) * pageSize;
 
         const tag = await Tag.findOne(tagFilter)
             .populate({
@@ -62,6 +95,8 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
                 model: Question,
                 match: searchQuery ? { title: { $regex: searchQuery, $options: 'i' } } : {},
                 options: {
+                    skip: skiptAmount,
+                    limit: pageSize + 1,
                     sort: { createdAt: -1 },
                 },
                 populate: [
@@ -77,7 +112,9 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         const questions = tag.questions;
         const tagTitle = tag.name;
 
-        return { questions, tagTitle };
+        const isNext = tag.questions.length > pageSize;
+
+        return { questions, tagTitle, isNext };
     } catch (error) {
         console.error(error);
         throw error;

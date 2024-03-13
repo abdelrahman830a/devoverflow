@@ -12,7 +12,7 @@ import { getUserById } from "@/lib/actions/user.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 
-const page = async ({ params }: any) => {
+const page = async ({ params, searchParams}: any) => {
   const { userId: clerkId } = auth();
 
   let mongoUser;
@@ -100,6 +100,8 @@ const page = async ({ params }: any) => {
         questionId={result._id}
         authorId={mongoUser?._id}
         totalAnswers={result.answers.length}
+        filter={searchParams?.filter}
+        page={searchParams?.page}
       />
 
       <Answer
