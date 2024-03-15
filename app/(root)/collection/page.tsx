@@ -7,6 +7,13 @@ import { QuestionFilters } from "@/constants/filters";
 import { getSavedQuestions } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Users | DevOverFlow",
+  description:
+    "Ask questions, get answers, and engage with the DevOverFlow community.",
+};
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { userId } = auth();
 

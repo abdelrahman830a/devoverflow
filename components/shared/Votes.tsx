@@ -13,6 +13,7 @@ import { usePathname, useRouter } from "next/navigation";
 import router from "next/router";
 import path from "path";
 import React, { useEffect } from "react";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   type: string;
@@ -40,7 +41,11 @@ const Votes = ({
 
   const handleVote = async (action: string) => {
     // eslint-disable-next-line no-useless-return
-    if (!userId) return;
+    if (!userId)
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
 
     if (action === "upvote") {
       if (type === "Question") {
@@ -60,6 +65,10 @@ const Votes = ({
           path: pathname,
         });
       }
+      return toast({
+        title: `Upvote ${!hasupVoted ? "Successful" : "Removed"}`,
+        variant: !hasupVoted ? "default" : "destructive",
+      });
     }
 
     if (action === "downvote") {
@@ -80,6 +89,10 @@ const Votes = ({
           path: pathname,
         });
       }
+      return toast({
+        title: `Downvote ${!hasdownVoted ? "Successful" : "Removed"}`,
+        variant: !hasupVoted ? "default" : "destructive",
+      });
     }
   };
 
@@ -88,6 +101,10 @@ const Votes = ({
       questionId: itemId,
       userId,
       path: pathname,
+    });
+    return toast({
+      title: `Question ${!hasSaved ? "saved successfully" : "removed"} from collection`,
+      variant: !hasupVoted ? "default" : "destructive",
     });
   };
 

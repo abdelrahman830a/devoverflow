@@ -30,11 +30,6 @@ const CardsActions = ({ type, itemId, authorId, questionId }: Props) => {
         path: pathName,
         authorId,
       });
-
-      toast({
-        title: "Question deleted",
-        description: "Your question has been deleted successfully",
-      });
       router.push("/");
     } else {
       // delete Answer
@@ -42,11 +37,6 @@ const CardsActions = ({ type, itemId, authorId, questionId }: Props) => {
         answerId: JSON?.parse(itemId) ? JSON.parse(itemId) : itemId,
         path: pathName,
         authorId,
-      });
-
-      toast({
-        title: "Answer deleted",
-        description: "Your answer has been deleted successfully",
       });
       router.push(`/question/${JSON.parse(questionId)}`);
     }

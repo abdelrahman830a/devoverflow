@@ -11,6 +11,14 @@ import Stats from "@/components/shared/Stats";
 import AnswerTab from "@/components/shared/AnswerTab";
 import QuestionTab from "@/components/shared/QuestionTab";
 // import { getJoinedDate } from "@/lib/utils";
+
+import type { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Profile | DevOverFlow",
+  description:
+    "Ask questions, get answers, and engage with the DevOverFlow community.",
+};
+
 const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
   const userInfo = await getUserInfo({
@@ -96,7 +104,9 @@ const page = async ({ params, searchParams }: URLProps) => {
               Answers
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-posts" className="flex w-full flex-col gap-6">
+          <TabsContent
+            value="top-posts"
+            className="mt-5 flex w-full flex-col gap-6">
             <QuestionTab
               searchParams={searchParams}
               clerkId={clerkId}

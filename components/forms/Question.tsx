@@ -22,6 +22,7 @@ import Image from "next/image";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme } from "@/context/ThemeProvider";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   mongoUserId: string;
@@ -69,7 +70,6 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
           author: mongoUserId,
           path: pathname,
         });
-
         router.push("/");
       }
     } catch (error) {
