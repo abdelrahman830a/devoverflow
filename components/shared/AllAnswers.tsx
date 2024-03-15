@@ -8,10 +8,12 @@ import { getTimeStamp } from "@/lib/utils";
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
 import Pagination from "./Pagination";
+import CardsActions from "./CardsActions";
 
 interface Props {
   questionId: string;
   authorId: string;
+  clerkId: string | null | undefined;
   totalAnswers: number;
   filter?: string;
   page?: string;
@@ -22,8 +24,9 @@ interface Props {
 const AllAnswers = async ({
   questionId,
   authorId,
-  totalAnswers,
+  clerkId,
   filter,
+  totalAnswers,
   page,
 }: Props) => {
   const result = await getAllAnswers({
@@ -74,6 +77,16 @@ const AllAnswers = async ({
                     downvotes={answer.downvotes.length}
                     hasdownVoted={answer.downvotes.includes(authorId)}
                   />
+                  {clerkId === answer.author.clerkId && (
+                    <div className="ml-2.5 flex items-center justify-center">
+                      <CardsActions
+                        questionId={JSON.stringify(questionId)}
+                        type="answer"
+                        itemId={JSON.stringify(answer._id)}
+                        authorId={JSON.stringify(answer.author._id)}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

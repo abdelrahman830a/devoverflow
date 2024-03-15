@@ -101,9 +101,15 @@ export async function createQuestion(params: CreateQuestionParams) {
         });
 
         // create an interaction record for authors asking questions
+        await Interaction.create({
+            user: author,
+            action: 'ask_question',
+            question: question._id,
+            tags: tagDocument
+        })
 
         // incerment author's reputation
-        await Question.findByIdAndUpdate(author, { $inc: { reputation: 20 } });
+        await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
         revalidatePath(path);
     } catch (error) {
@@ -123,7 +129,7 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
             .populate({ path: 'tags', model: Tag, select: '_id name' })
             .populate({ path: 'author', model: User, select: '_id clerkId name picture' });
 
-        if (!question) throw new Error('Question not found');
+        if (!question) throw new Error('question not found');
 
         return question;
     } catch (error) {
@@ -153,6 +159,12 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
 
         if (!question) throw new Error("Question not found");
 
+        // increment user's reputation by +1/-1 for upvoting/revoking the upvote
+        await User.findByIdAndUpdate(userId, { $inc: { reputation: hasupVoted ? -1 : 1 } });
+
+        // increment author's reputation by +10/-10 for upvoting/revoking the upvote
+        await User.findByIdAndUpdate(question.author, { $inc: { reputation: hasupVoted ? -10 : 10 } })
+
         revalidatePath(path);
     } catch (error) {
         console.log("Error upvoting question", error);
@@ -179,6 +191,13 @@ export async function donwVoteQuestion(params: QuestionVoteParams) {
         const question = await Question.findByIdAndUpdate(questionId, updateQuery, { new: true });
 
         if (!question) throw new Error("Question not found");
+
+        // increment user's reputation by +1/-1 for upvoting/revoking the upvote
+        await User.findByIdAndUpdate(userId, { $inc: { reputation: hasupVoted ? -1 : 2 } });
+
+        // increment author's reputation by +10/-10 for upvoting/revoking the upvote
+        await User.findByIdAndUpdate(question.author, { $inc: { reputation: hasupVoted ? -10 : 10 } });
+
 
         revalidatePath(path);
     } catch (error) {
@@ -212,7 +231,7 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
     try {
         connectToDatabase();
 
-        const { questionId, path } = params;
+        const { questionId, path, authorId } = params;
 
         await Question.deleteOne({ _id: questionId });
         await Answer.deleteMany({ question: questionId });
@@ -221,6 +240,9 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
             { questions: questionId },
             { $pull: { questions: questionId } }
         )
+
+        // decrement author's reputation by -10
+        await User.findByIdAndUpdate(authorId, { $inc: { reputation: -5 } });
 
         revalidatePath(path);
     } catch (error) {

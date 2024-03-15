@@ -5,6 +5,7 @@ import Question from "../database/question.model";
 import { connectToDatabase } from "../mongoose"
 import { AnswerVoteParams, CreateAnswerParams, DeleteAnswerParams, GetAnswersParams } from "./shared.types";
 import Interaction from "../database/interaction.model";
+import User from "../database/user.model";
 
 export async function createAnswer(params: CreateAnswerParams) {
     try {
@@ -19,9 +20,22 @@ export async function createAnswer(params: CreateAnswerParams) {
         });
 
 
-        await Question.findByIdAndUpdate(question, {
+        const questionObject = await Question.findByIdAndUpdate(question, {
             $push: { answers: newAnswer._id }
         })
+
+        // create an interaction record for the user answering the question
+        await Interaction.create({
+            user: author,
+            action: 'answer',
+            question,
+            answer: newAnswer._id,
+            tags: questionObject.tags,
+        })
+        // increment user's reputation by +10 for answering a question
+        await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
+
+
         revalidatePath(path);
     } catch (error) {
         console.log("Error creating answer", error);
@@ -91,6 +105,12 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
 
         if (!answer) throw new Error("Answer not found");
 
+        // increment user's reputation by +1/-1 for upvoting/revoking the upvote
+        await User.findByIdAndUpdate(userId, { $inc: { reputation: hasupVoted ? -1 : 2 } });
+
+        // increment author's reputation by +10/-10 for upvoting/revoking the upvote
+        await User.findByIdAndUpdate(answer.author, { $inc: { reputation: hasupVoted ? -10 : 10 } });
+
         revalidatePath(path);
     } catch (error) {
         console.log("Error upvoting answer", error);
@@ -119,6 +139,12 @@ export async function donwVoteAnswer(params: AnswerVoteParams) {
 
         if (!answer) throw new Error("Answer not found");
 
+        // increment user's reputation by +1/-1 for downvoting/revoking the downvote
+        await User.findByIdAndUpdate(userId, { $inc: { reputation: hasdownVoted ? -1 : 2 } });
+
+        // increment author's reputation by +10/-10 for downvoting/revoking the downvote
+        await User.findByIdAndUpdate(answer.author, { $inc: { reputation: hasdownVoted ? -10 : 10 } });
+
         revalidatePath(path);
     } catch (error) {
         console.log("Error downvoting answer", error);
@@ -130,7 +156,7 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
     try {
         connectToDatabase();
 
-        const { answerId, path } = params;
+        const { answerId, path, authorId } = params;
 
         const answer = await Answer.findById(answerId);
 
@@ -143,6 +169,8 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
         )
         await Interaction.deleteMany({ answer: answerId });
 
+        // decrement user's reputation by -10 for deleting an answer
+        await User.findByIdAndUpdate(JSON.parse(authorId || ""), { $inc: { reputation: -10 } });
 
         revalidatePath(path);
     } catch (error) {

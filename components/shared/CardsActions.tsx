@@ -8,9 +8,11 @@ import { deleteAnswer } from "@/lib/actions/answer.action";
 interface Props {
   type?: string;
   itemId: string;
+  authorId?: string;
+  questionId?: string;
 }
 
-const CardsActions = ({ type, itemId }: Props) => {
+const CardsActions = ({ type, itemId, authorId, questionId }: Props) => {
   const pathName = usePathname();
   const router = useRouter();
 
@@ -23,20 +25,30 @@ const CardsActions = ({ type, itemId }: Props) => {
   const handleDelete = async () => {
     if (type === "question") {
       // delete Question
-      await deleteQuestion({ questionId: JSON.parse(itemId), path: pathName });
+      await deleteQuestion({
+        questionId: JSON.parse(itemId),
+        path: pathName,
+        authorId,
+      });
 
       toast({
         title: "Question deleted",
         description: "Your question has been deleted successfully",
       });
+      router.push("/");
     } else {
       // delete Answer
-      await deleteAnswer({ answerId: JSON.parse(itemId), path: pathName });
+      await deleteAnswer({
+        answerId: JSON?.parse(itemId) ? JSON.parse(itemId) : itemId,
+        path: pathName,
+        authorId,
+      });
 
       toast({
         title: "Answer deleted",
         description: "Your answer has been deleted successfully",
       });
+      router.push(`/question/${JSON.parse(questionId)}`);
     }
   };
 

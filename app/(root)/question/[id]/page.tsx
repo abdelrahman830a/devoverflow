@@ -11,6 +11,7 @@ import { getQuestionById } from "@/lib/actions/question.action";
 import { getUserById } from "@/lib/actions/user.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
+import CardsActions from "@/components/shared/CardsActions";
 
 const page = async ({ params, searchParams }: any) => {
   const { userId: clerkId } = auth();
@@ -53,6 +54,15 @@ const page = async ({ params, searchParams }: any) => {
               hasdownVoted={result.downvotes.includes(mongoUser?._id)}
               hasSaved={mongoUser?.saved.includes(result._id)}
             />
+            {mongoUser?.clerkId === result.author.clerkId && (
+              <div className="ml-5 flex items-center justify-center gap-2">
+                <CardsActions
+                  type="question"
+                  itemId={JSON.stringify(result._id)}
+                  authorId={result.author._id}
+                />
+              </div>
+            )}
           </div>
         </div>
 
@@ -100,6 +110,7 @@ const page = async ({ params, searchParams }: any) => {
 
       <AllAnswers
         questionId={result._id}
+        clerkId={clerkId}
         authorId={mongoUser?._id}
         totalAnswers={result.answers.length}
         filter={searchParams?.filter}

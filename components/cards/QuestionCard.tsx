@@ -56,7 +56,11 @@ const QuestionCard = async ({
         {/* If signed in add edit delete actions */}
         <SignedIn>
           {clerkId === author.clerkId && (
-            <CardsActions type="question" itemId={JSON.stringify(_id)} />
+            <CardsActions
+              clerkId={clerkId}
+              type="question"
+              itemId={JSON.stringify(_id)}
+            />
           )}
         </SignedIn>
       </div>

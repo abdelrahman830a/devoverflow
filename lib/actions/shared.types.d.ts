@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
 
 import { IUser } from "@/mongodb";
+import { BADGE_CRITERIA } from "@/constants";
 
 export interface CreateAnswerParams {
     content: string;
@@ -27,6 +28,7 @@ export interface AnswerVoteParams {
 export interface DeleteAnswerParams {
     answerId: string;
     path: string;
+    authorId: string | null | undefined;
 }
 
 export interface SearchParams {
@@ -81,6 +83,7 @@ export interface QuestionVoteParams {
 export interface DeleteQuestionParams {
     questionId: string;
     path: string;
+    authorId: string | null | undefined;
 }
 
 export interface EditQuestionParams {
@@ -169,3 +172,9 @@ export interface UrlQueryParams {
     value: string | null;
 }
 
+export interface BadgeParam {
+    criteria: {
+        type: keyof typeof BADGE_CRITERIA,
+        count: number
+    }[]
+}
