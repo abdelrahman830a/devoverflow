@@ -33,10 +33,9 @@ export async function getAllAnswers(params: GetAnswersParams) {
     try {
         connectToDatabase();
 
-        const { questionId, sortBy, page = 1, pageSize = 10 } = params;
+        const { questionId, sortBy, page = 1, pageSize = 1 } = params;
 
         let sortOptions = {};
-
         switch (sortBy) {
             case 'highestUpvotes':
                 sortOptions = { upvotes: -1 };
@@ -52,13 +51,19 @@ export async function getAllAnswers(params: GetAnswersParams) {
                 break;
         }
 
+        const skipAmount = (page - 1) * pageSize;
+
         const answers = await Answer.find({ question: questionId })
+            .skip(skipAmount)
+            .limit(pageSize)
             .populate('author', '_id clerkId name picture')
             .sort(sortOptions)
-            .skip((page - 1) * pageSize)
-            .limit(pageSize)
 
-        return { answers };
+        const totalAnswers = await Answer.countDocuments({ question: questionId });
+
+        const isNext = totalAnswers > skipAmount + answers.length;
+
+        return { answers, isNext };
     } catch (error) {
         console.log("Error getting all answers", error);
         throw error;

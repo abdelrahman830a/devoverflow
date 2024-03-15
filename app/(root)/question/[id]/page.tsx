@@ -12,7 +12,7 @@ import { getUserById } from "@/lib/actions/user.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 
-const page = async ({ params, searchParams}: any) => {
+const page = async ({ params, searchParams }: any) => {
   const { userId: clerkId } = auth();
 
   let mongoUser;
@@ -21,7 +21,9 @@ const page = async ({ params, searchParams}: any) => {
     mongoUser = await getUserById({ userId: clerkId });
   }
 
-  const result = await getQuestionById({ questionId: params.id });
+  const result = await getQuestionById({
+    questionId: params.id,
+  });
   return (
     <>
       <div className="flex-start flex w-full flex-col">

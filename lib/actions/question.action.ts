@@ -103,6 +103,7 @@ export async function createQuestion(params: CreateQuestionParams) {
         // create an interaction record for authors asking questions
 
         // incerment author's reputation
+        await Question.findByIdAndUpdate(author, { $inc: { reputation: 20 } });
 
         revalidatePath(path);
     } catch (error) {
@@ -116,11 +117,13 @@ export async function getQuestionById(params: GetQuestionByIdParams) {
     try {
         connectToDatabase();
 
-        const { questionId } = params;
+        const { questionId, } = params;
 
         const question = await Question.findById(questionId)
             .populate({ path: 'tags', model: Tag, select: '_id name' })
             .populate({ path: 'author', model: User, select: '_id clerkId name picture' });
+
+        if (!question) throw new Error('Question not found');
 
         return question;
     } catch (error) {
