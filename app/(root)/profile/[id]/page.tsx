@@ -16,7 +16,6 @@ const page = async ({ params, searchParams }: URLProps) => {
   const userInfo = await getUserInfo({
     userId: clerkId,
   });
-  console.log("user info user", userInfo);
   return (
     <>
       <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
