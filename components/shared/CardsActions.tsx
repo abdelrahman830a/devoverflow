@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { useToast } from "@/components/ui/use-toast";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteQuestion } from "@/lib/actions/question.action";
 import { deleteAnswer } from "@/lib/actions/answer.action";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   type?: string;
@@ -15,8 +15,6 @@ interface Props {
 const CardsActions = ({ type, itemId, authorId, questionId }: Props) => {
   const pathName = usePathname();
   const router = useRouter();
-
-  const { toast } = useToast();
 
   const handleEdit = () => {
     router.push(`/question/edit/${JSON.parse(itemId)}`);
@@ -31,6 +29,10 @@ const CardsActions = ({ type, itemId, authorId, questionId }: Props) => {
         authorId,
       });
       router.push("/");
+      toast({
+        title: "success",
+        description: "Question deleted successfully",
+      });
     } else {
       // delete Answer
       await deleteAnswer({
@@ -38,7 +40,11 @@ const CardsActions = ({ type, itemId, authorId, questionId }: Props) => {
         path: pathName,
         authorId,
       });
-      router.push(`/question/${JSON.parse(questionId)}`);
+      router.push(`/question/${JSON.parse(questionId || "")}`);
+      toast({
+        title: "success",
+        description: "Answer deleted successfully",
+      });
     }
   };
 

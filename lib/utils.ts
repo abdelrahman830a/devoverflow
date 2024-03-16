@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import qs from "query-string";
 import { BadgeParam, RemoveUrlQueryParams, UrlQueryParams } from "./actions/shared.types";
-import { BadgeCounts, BadgeCounts } from "@/types";
+import { BadgeCounts } from "@/types";
 import { BADGE_CRITERIA } from "@/constants";
 
 export function cn(...inputs: ClassValue[]) {

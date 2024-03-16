@@ -18,6 +18,7 @@ import { ProfileSchema } from "@/lib/validations";
 import { updateUser } from "@/lib/actions/user.action";
 import { usePathname, useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "../ui/use-toast";
 
 interface Props {
   user: string;
@@ -58,6 +59,10 @@ const Profile = ({ user, clerkId }: Props) => {
         path: pathname,
       });
       router.back();
+      toast({
+        title: "success",
+        description: "Profile updated successfully",
+      });
     } catch (error) {
       console.log("Error editing profile", error);
     } finally {

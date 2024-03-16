@@ -10,8 +10,6 @@ import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
 import AnswerTab from "@/components/shared/AnswerTab";
 import QuestionTab from "@/components/shared/QuestionTab";
-// import { getJoinedDate } from "@/lib/utils";
-
 import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Profile | DevOverFlow",
@@ -22,7 +20,7 @@ export const metadata: Metadata = {
 const page = async ({ params, searchParams }: URLProps) => {
   const { userId: clerkId } = auth();
   const userInfo = await getUserInfo({
-    userId: clerkId,
+    userId: params.id,
   });
   return (
     <>
@@ -109,7 +107,6 @@ const page = async ({ params, searchParams }: URLProps) => {
             className="mt-5 flex w-full flex-col gap-6">
             <QuestionTab
               searchParams={searchParams}
-              clerkId={clerkId}
               userId={userInfo.user._id}
             />
           </TabsContent>

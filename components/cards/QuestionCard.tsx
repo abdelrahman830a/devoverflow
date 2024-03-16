@@ -8,7 +8,6 @@ import CardsActions from "../shared/CardsActions";
 
 interface QuestionProps {
   _id: string;
-  // clerkId?: string | null | undefined;
   title: string;
   tags: {
     _id: string;
@@ -28,7 +27,6 @@ interface QuestionProps {
 
 const QuestionCard = async ({
   _id,
-  // clerkId,
   title,
   tags,
   author,
@@ -56,11 +54,7 @@ const QuestionCard = async ({
         {/* If signed in add edit delete actions */}
         <SignedIn>
           {clerkId === author.clerkId && (
-            <CardsActions
-              clerkId={clerkId}
-              type="question"
-              itemId={JSON.stringify(_id)}
-            />
+            <CardsActions type="question" itemId={JSON.stringify(_id)} />
           )}
         </SignedIn>
       </div>

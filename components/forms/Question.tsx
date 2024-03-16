@@ -62,6 +62,10 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
           path: pathname,
         });
         router.push(`/question/${parsedQuestionDetails._id}`);
+        toast({
+          title: "success",
+          description: "Question edited successfully",
+        });
       } else {
         await createQuestion({
           title: values.title,
@@ -71,6 +75,10 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
           path: pathname,
         });
         router.push("/");
+        toast({
+          title: "success",
+          description: "Question created successfully",
+        });
       }
     } catch (error) {
       console.log("Error creating question", error);

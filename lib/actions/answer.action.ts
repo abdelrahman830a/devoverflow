@@ -135,7 +135,6 @@ export async function donwVoteAnswer(params: AnswerVoteParams) {
         }
 
         const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, { new: true });
-        console.log(answer);
 
         if (!answer) throw new Error("Answer not found");
 

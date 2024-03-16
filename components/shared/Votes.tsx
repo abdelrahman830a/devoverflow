@@ -10,8 +10,6 @@ import { toggleSaveQuestion } from "@/lib/actions/user.action";
 import { formatNumber } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import router from "next/router";
-import path from "path";
 import React, { useEffect } from "react";
 import { toast } from "../ui/use-toast";
 
@@ -45,6 +43,7 @@ const Votes = ({
       return toast({
         title: "Please log in",
         description: "You must be logged in to perform this action",
+        variant: "destructive",
       });
 
     if (action === "upvote") {
@@ -66,8 +65,8 @@ const Votes = ({
         });
       }
       return toast({
-        title: `Upvote ${!hasupVoted ? "Successful" : "Removed"}`,
         variant: !hasupVoted ? "default" : "destructive",
+        title: `Upvote ${!hasupVoted ? "Successful" : "Removed"}`,
       });
     }
 
@@ -91,7 +90,7 @@ const Votes = ({
       }
       return toast({
         title: `Downvote ${!hasdownVoted ? "Successful" : "Removed"}`,
-        variant: !hasupVoted ? "default" : "destructive",
+        variant: !hasdownVoted ? "default" : "destructive",
       });
     }
   };
@@ -103,8 +102,10 @@ const Votes = ({
       path: pathname,
     });
     return toast({
-      title: `Question ${!hasSaved ? "saved successfully" : "removed"} from collection`,
-      variant: !hasupVoted ? "default" : "destructive",
+      title: `Question ${
+        !hasSaved ? "Saved to" : "Removed from"
+      } your collection`,
+      variant: !hasSaved ? "default" : "destructive",
     });
   };
 

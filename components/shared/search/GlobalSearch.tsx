@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
-import { set } from "mongoose";
 import GlobalResult from "./GlobalResult";
 
 const GlobalSearch = () => {
