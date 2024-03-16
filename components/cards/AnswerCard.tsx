@@ -5,7 +5,7 @@ import CardsActions from "../shared/CardsActions";
 import { SignedIn } from "@clerk/nextjs";
 
 interface Props {
-  clerkId?: string;
+  clerkId?: string | null | undefined;
   _id: string;
   question: {
     _id: string;
@@ -13,7 +13,7 @@ interface Props {
   };
   author: {
     _id: string;
-    clerkId: string;
+    clerkId: string | null | undefined;
     name: string;
     picture: string;
   };
