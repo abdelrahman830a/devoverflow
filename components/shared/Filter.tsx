@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import {
   Select,
   SelectContent,
@@ -24,11 +24,7 @@ const Filter = ({ filters, otherClasses, containerClasses }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const query = searchParams.get("filter");
-  const [search, setSearch] = useState(query);
-
   const handleTypeClick = (item: string) => {
-    setSearch(item);
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: "filter",
