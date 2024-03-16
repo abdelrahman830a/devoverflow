@@ -5,7 +5,7 @@ import Pagination from "./Pagination";
 
 interface Props extends SearchParamsProps {
   userId: string;
-  clerkId?: string | null | undefined;
+  clerkId?: string | undefined;
   searchParams: any;
 }
 
