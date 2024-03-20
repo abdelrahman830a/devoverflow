@@ -32,6 +32,12 @@ export const HomePageFilters = [
     { name: "Frequent", value: "frequent" },
     { name: "Unanswered", value: "unanswered" },
 ];
+export const JobsPageFilters = [
+    { name: "Full Time", value: "fulltime" },
+    { name: "Part Time", value: "parttime" },
+    { name: "Internship", value: "intern" },
+    { name: "Contract", value: "contractor" },
+];
 
 export const GlobalSearchFilters = [
     { name: "Question", value: "question" },

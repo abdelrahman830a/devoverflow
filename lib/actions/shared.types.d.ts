@@ -178,3 +178,24 @@ export interface BadgeParam {
         count: number
     }[]
 }
+
+export interface JobSearchParams {
+    page?: number;
+    pageSize?: number;
+    searchQuery?: string;
+}
+
+export interface JobType {
+    employerName: string;
+    employerLogo: string;
+    employerWebsite: string;
+    jobPublisher: string;
+    jobType: string;
+    jobTitle: string;
+    jobApplyLink: string;
+    jobDescription: string;
+    jobCountry: string;
+    jobDate: string;
+    jobLocation: boolean;
+    jobSalary: number;
+}

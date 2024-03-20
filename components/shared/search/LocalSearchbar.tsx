@@ -45,6 +45,13 @@ const LocalSearchbar = ({
           });
           router.push(newUrl, { scroll: false });
         }
+        if (pathname === "/jobs") {
+          const newUrl = removeKeysFromQuery({
+            params: searchParams.toString(),
+            keys: ["q"],
+          });
+          router.push(newUrl, { scroll: false });
+        }
       }
     }, 300);
 

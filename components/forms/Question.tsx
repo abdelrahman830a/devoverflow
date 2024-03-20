@@ -249,7 +249,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
                 </div>
               )}
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Add up to 3 tags to describe what your question is about. You
+                Add up to 4 tags to describe what your question is about. You
                 need to tap enter to add a tag.
               </FormDescription>
               <FormMessage className="text-red-500" />

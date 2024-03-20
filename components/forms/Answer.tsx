@@ -41,6 +41,14 @@ const Answer = ({ question, questionId, authorId }: Props) => {
   });
 
   const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
+    if (!authorId) {
+      toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+        variant: "destructive",
+      });
+    }
+
     setIsSubmitting(true);
 
     try {
