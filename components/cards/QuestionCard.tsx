@@ -36,6 +36,7 @@ const QuestionCard = async ({
   createdAt,
 }: QuestionProps) => {
   const { userId: clerkId } = auth();
+  console.log("clerkId", clerkId);
 
   return (
     <div className="card-wrapper rounded-[10px] px-11 py-9">
@@ -53,7 +54,7 @@ const QuestionCard = async ({
         </div>
         {/* If signed in add edit delete actions */}
         <SignedIn>
-          {clerkId === author.clerkId && (
+          {clerkId === author?.clerkId && (
             <CardsActions type="question" itemId={JSON.stringify(_id)} />
           )}
         </SignedIn>
@@ -69,9 +70,9 @@ const QuestionCard = async ({
         <Metric
           imgUrl={author?.picture}
           alt="user"
-          value={author.name}
+          value={author?.name}
           title={` - asked ${getTimeStamp(createdAt)}`}
-          href={`/profile/${author._id}`}
+          href={`/profile/${author?._id}`}
           isAuthor
           textStyles="body-medium text-dark400_light700"
         />
